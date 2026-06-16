@@ -341,7 +341,7 @@ function MovieModal({movie,onClose,inWatchlist,onToggle,lang}){
           <div className="modal-actions">
             <button className="btn btn-white btn-sm" onClick={()=>window.showWatchLinks&&window.showWatchLinks(movie)}>▶ {t.watchTrailer}</button>
             <button className={"btn btn-sm "+(inWatchlist?'btn-grad':'btn-outline')} onClick={()=>onToggle(movie.id)}>
-              🔖 {inWatchlist?t.inList:t.addList}
+              🔖 {inWatchlist? t.inList : t.addList}
             </button>
           </div>
           <div className="modal-ad"><AdBanner/></div>
