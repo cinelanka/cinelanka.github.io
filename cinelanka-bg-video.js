@@ -10,7 +10,7 @@
     try { fn(); } catch (e) { console.error("cinelanka-bg-video [" + label + "]:", e); }
   }
 
-  var YOUTUBE_VIDEO_ID = "sYGsqFtojDc";
+  var YOUTUBE_VIDEO_ID = "f_7JcXeQOdM"; // Creative Commons licensed film reel loop
 
   function injectBackgroundVideo() {
     if (document.getElementById("cl-bg-video-wrap")) return; // already added
@@ -42,7 +42,7 @@
     var overlay = document.createElement("div");
     overlay.style.cssText =
       "position:absolute;inset:0;" +
-      "background:rgba(9,9,11,0.5);"; // lighter overlay so the video is clearly visible
+      "background:rgba(9,9,11,0.65);"; // balanced so movie cards stay clearly visible
 
     wrap.appendChild(iframe);
     wrap.appendChild(overlay);
