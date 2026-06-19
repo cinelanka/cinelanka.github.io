@@ -1,115 +1,115 @@
-// 1. Dynamic CSS Styles - මූවි ක්ලිප්ස් යන Film Strip එක සහ Overlays නිර්මාණය කිරීම
+// 1. Dynamic CSS Styles - අනිවාර්යයෙන්ම මතු වී පෙනෙන සේ සැකසූ Styles
 const style = document.createElement('style');
 style.textContent = `
-    /* Main Video Wall Container */
-    .cinema-video-wall-bg {
+    /* Main Background Container */
+    .cinema-premium-bg-wall {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: -9999; /* හැමදේටම යටින් තැබීමට */
-        background-color: #050507;
+        z-index: -1 !important; /* සයිට් එකේ content එකට යටින්ම තැබීමට */
+        background-color: #050507 !important;
+        background: radial-gradient(circle at center, #250a10 0%, #050507 80%) !important;
         overflow: hidden;
         pointer-events: none;
     }
 
-    /* Moving Movie Tape/Strip Wrapper */
-    .movie-tape-wrapper {
+    /* Film Strip පටිය */
+    .moving-film-strip-wrapper {
         position: absolute;
-        top: 30%; /* සයිට් එකේ මැද හරියට වන්නට */
+        top: 35%; /* සයිට් එකේ මැද හරියට වන්නට */
         left: 0;
-        width: 200vw;
+        width: 300vw;
         display: flex;
-        gap: 20px;
-        padding: 15px 0;
-        background: rgba(0, 0, 0, 0.6);
-        border-top: 6px dashed rgba(255, 255, 255, 0.15); /* Film strip holes effect */
-        border-bottom: 6px dashed rgba(255, 255, 255, 0.15);
-        transform: rotate(-8deg) scale(1.1); /* තරමක ඇලවීමක් */
-        animation: moveTape 45s linear infinite;
-        opacity: 0.15; /* සයිට් එකේ Content එක කියවන්න පුළුවන් වෙන්න විනිවිද පෙනෙන ප්‍රමාණය */
+        gap: 25px;
+        padding: 20px 0;
+        background: rgba(0, 0, 0, 0.85) !important;
+        border-top: 6px dashed rgba(255, 255, 255, 0.3) !important; /* Film holes */
+        border-bottom: 6px dashed rgba(255, 255, 255, 0.3) !important;
+        transform: rotate(-7deg) scale(1.1);
+        animation: moveFilmTape 30s linear infinite !important;
+        box-shadow: 0 0 50px rgba(0,0,0,0.8);
     }
 
-    /* Individual Movie Video Item */
-    .movie-clip-item {
-        width: 320px;
-        height: 180px;
+    /* Film එක ඇතුලේ තියෙන චූටි මූවි ක්ලිප් කොටස් (Boxes) */
+    .animated-movie-box {
+        width: 280px;
+        height: 160px;
+        border-radius: 6px;
+        position: relative;
         overflow: hidden;
-        border-radius: 4px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        background: #111;
+        background-size: cover;
+        background-position: center;
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.7), 0 0 15px rgba(255,255,255,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .movie-clip-item video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    /* Dark Red Vibe එක දීම සඳහා වන Overlay එක */
-    .cinema-wall-overlay {
+    /* මූවි ක්ලිප් වගේ පෙනෙන්න දාලා තියෙන CSS Animations */
+    .animated-movie-box::before {
+        content: "";
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at center, rgba(61, 20, 29, 0.5) 0%, rgba(5, 5, 7, 0.96) 85%);
-        z-index: 2;
+        background: linear-gradient(45deg, rgba(220, 38, 38, 0.2), transparent);
+        animation: clipGlow 3s ease-in-out infinite alternate;
     }
 
-    /* Tape එක වමට ඇදී යන Animation එක */
-    @keyframes moveTape {
-        0% { transform: rotate(-8deg) translateX(0); }
-        100% { transform: rotate(-8deg) translateX(-50vw); }
+    /* Play Icon එකක් (Movie clip එකක් වගේ පෙනුම තවත් වැඩි කරන්න) */
+    .animated-movie-box::after {
+        content: "▶";
+        color: rgba(255, 255, 255, 0.25);
+        font-size: 2rem;
+        text-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    /* CRITICAL FIX: පැරණි Backgrounds ඉවත් කිරීම */
-    body, html {
-        background-color: transparent !important;
+    /* Film පටිය වමට ඇදී යන සුපිරි ඇනිමේෂන් එක */
+    @keyframes moveFilmTape {
+        0% { transform: rotate(-7deg) translateX(0); }
+        100% { transform: rotate(-7deg) translateX(-100vw); }
+    }
+
+    @keyframes clipGlow {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.8; }
+    }
+
+    /* FORCE FIX: සයිට් එකේ දැනට තියෙන පරණ බැක්ග්‍රවුන්ඩ්ස් ඔක්කොම විනිවිද පෙනෙන ලෙස සකස් කිරීම */
+    html, body {
         background: transparent !important;
+        background-color: transparent !important;
     }
-    main, section, .content-wrapper, .container {
+
+    /* ඔයාගේ සයිට් එකේ ප්‍රධාන කොටස් වල background එක නිසා මේක වැහෙන එක 100%ක්ම නැති කිරීම */
+    #app, .main-content, main, section, .hero, .movies-container, .container, .wrapper {
+        background: transparent !important;
         background-color: transparent !important;
     }
 `;
 document.head.appendChild(style);
 
-// 2. HTML Elements (Movie Clips 4ක් සහ ඒවායේ වීඩියෝ ලින්ක්ස්) ආරක්ෂිතව ඇතුලත් කිරීම
+// 2. HTML Elements ටික සයිට් එකට එකතු කිරීම
 document.addEventListener('DOMContentLoaded', () => {
-    if (!document.querySelector('.cinema-video-wall-bg')) {
+    if (!document.querySelector('.cinema-premium-bg-wall')) {
         const bgContainer = document.createElement('div');
-        bgContainer.className = 'cinema-video-wall-bg';
+        bgContainer.className = 'cinema-premium-bg-wall';
 
-        // උසස් තත්වයේ නොමිලේ ලබාගත හැකි Cinematic වීඩියෝ ක්ලිප්ස් 4ක් එක දිගට Repeat වන ලෙස දමා ඇත
+        // Unsplash එකේ තියෙන ප්‍රසිද්ධ මූවි පෝස්ටර්/සිනමා ඉමේජ් ලින්ක්ස් (මේවා කිසිම වෙලාවක බ්ලොක් වෙන්නේ නැහැ)
         bgContainer.innerHTML = `
-            <div class="cinema-wall-overlay"></div>
-            <div class="movie-tape-wrapper">
-                <div class="movie-clip-item">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://vfx.productioncrate.com/stock-hd/sub-downloads/Crate-VFX-Saber_Dual_Red_1_hd.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="movie-clip-item">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-flying-through-a-futuristic-tunnel-with-neon-lights-42284-large.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="movie-clip-item">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-vintage-film-projector-in-dark-room-42867-large.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="movie-clip-item">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-top-aerial-view-of-a-highway-with-cars-at-night-42171-large.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="movie-clip-item"><video autoplay loop muted playsinline><source src="https://vfx.productioncrate.com/stock-hd/sub-downloads/Crate-VFX-Saber_Dual_Red_1_hd.mp4" type="video/mp4"></video></div>
-                <div class="movie-clip-item"><video autoplay loop muted playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-flying-through-a-futuristic-tunnel-with-neon-lights-42284-large.mp4" type="video/mp4"></video></div>
-                <div class="movie-clip-item"><video autoplay loop muted playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-vintage-film-projector-in-dark-room-42867-large.mp4" type="video/mp4"></video></div>
-                <div class="movie-clip-item"><video autoplay loop muted playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-top-aerial-view-of-a-highway-with-cars-at-night-42171-large.mp4" type="video/mp4"></video></div>
+            <div class="moving-film-strip-wrapper">
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1478720143023-154ed96bcbd9?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1542204172-e7052809f852?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=400');"></div>
+                <div class="animated-movie-box" style="background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=400');"></div>
             </div>
         `;
 
-        // Body එකේ යටින්ම හිටින්න මුලටම ඇතුල් කිරීම
+        // Body එකේ මුලටම සේෆ් විදිහට ඇතුල් කිරීම
         document.body.insertBefore(bgContainer, document.body.firstChild);
     }
 });
