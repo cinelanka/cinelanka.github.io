@@ -11,25 +11,22 @@
   function injectBackgroundVideo() {
     if (document.getElementById("cl-bg-video-wrap")) return;
 
-    // 🚨 FORCE FIX: සයිට් එකේ කන්ටෙන්ට් එක සුපිරියටම මතු කරවන CSS Styles
+    // සයිට් එකේ කන්ටෙන්ට් එක සුපිරියටම මතු කරවන සහ පරණ තද කළු backgrounds ඉවත් කරන කොටස
     var style = document.createElement('style');
     style.textContent = `
       html, body {
-        background: #060608 !important; /* කළු පසුබිම base එක විදිහට තැබීම */
+        background: #060608 !important;
       }
-      /* සයිට් එකේ ප්‍රධාන containers වල පරණ backgrounds ඉවත් කිරීම */
       #app, main, section, .hero, .movies-container, .container, .wrapper {
         background: transparent !important;
         background-color: transparent !important;
       }
-      /* මූවි කාඩ්ස් තවදුරටත් කැපී පෙනෙන්න පසුබිම තද කළු කිරීම (Solid blur effect) */
       .movie-card, .card, .trending-now, .top-rated, .movie-grid {
         background-color: rgba(10, 10, 14, 0.85) !important;
         backdrop-filter: blur(12px) !important;
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
       }
-      /* ටෙක්ස්ට් ඔක්කොම සුදු පාටින් ලස්සනට පේන්න සැලැස්වීම */
       h1, h2, h3, h4, p, span, a {
         text-shadow: 0 2px 4px rgba(0,0,0,0.8) !important;
       }
@@ -42,30 +39,32 @@
       "position:fixed;top:0;left:0;width:100vw;height:100vh;" +
       "z-index:-9999 !important;overflow:hidden;pointer-events:none;background:#060608;";
 
+    // 🛠️ PERMANENT FIX: යූටියුබ් බටන්ස් ස්ක්‍රීන් එකෙන් පිටතට තල්ලු කර සැඟවීම (Clip/Masking Effect)
     var clipper = document.createElement("div");
-    clipper.style.cssText = "position:absolute;inset:0;overflow:hidden;pointer-events:none;";
+    clipper.style.cssText = "position:absolute;top:5%;left:5%;width:90vw;height:90vh;overflow:hidden;pointer-events:none;";
 
     var iframe = document.createElement("iframe");
-    // 🛠️ PLAY BUTTON FIX: YouTube parameters තවදුරටත් දැඩි කර autoplay, mute සහ loop බලෙන් ක්‍රියාත්මක කිරීම
     iframe.src =
       "https://www.youtube.com/embed/" + YOUTUBE_VIDEO_ID +
       "?autoplay=1&mute=1&loop=1&playlist=" + YOUTUBE_VIDEO_ID +
-      "&controls=0&unmute=0&loop=1&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&enablejsapi=1";
+      "&controls=0&unmute=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&enablejsapi=1";
     iframe.title = "Background";
     iframe.setAttribute("allow", "autoplay; encrypted-media");
     iframe.setAttribute("tabindex", "-1");
+    
+    // 🛠️ බටන්ස් හැංගෙන්න වීඩියෝව විශාල කර (Scale 1.6), මැද කොටස පමණක් Screen එකට ගැනීම
     iframe.style.cssText =
       "position:absolute;top:50%;left:50%;" +
-      "width:100vw;height:177.78vw;min-height:100vh;min-width:177.78vh;" +
-      "transform:translate(-50%,-50%) scale(1.4);border:none;pointer-events:none;" +
-      "opacity: 0.12 !important;"; // 🛠️ BRIGHTNESS FIX: වීඩියෝවේ සුදු පාට අඩු කරන්න opacity එක 0.12 දක්වා අඩු කලා
+      "width:160vw;height:120vh;" + 
+      "transform:translate(-50%,-50%) scale(1.6);border:none;pointer-events:none;" +
+      "opacity: 0.12 !important;"; 
 
-    // 🛠️ OVERLAY FIX: වීඩියෝව හොඳටම ඩිම් (Dark) කර, මැදින් තද රතු සිනමා වයිබ් එකක් දීමට තද Overlay එකක් දීම
+    // මූවිස් ලස්සනට පේන්න වීඩියෝව උඩින් දමන Dark Red / Black Overlay එක
     var overlay = document.createElement("div");
     overlay.style.cssText =
       "position:absolute;inset:0;" +
       "background: radial-gradient(circle at center, rgba(35, 7, 12, 0.4) 0%, rgba(6, 6, 8, 0.96) 80%) !important;" +
-      "z-index:2;";
+      "z-index:2;pointer-events:none;";
 
     var clickBlocker = document.createElement("div");
     clickBlocker.style.cssText = "position:absolute;inset:0;z-index:5;background:transparent;";
