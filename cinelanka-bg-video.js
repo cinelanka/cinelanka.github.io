@@ -44,10 +44,19 @@
     var overlay = document.createElement("div");
     overlay.style.cssText =
       "position:absolute;inset:0;" +
-      "background:rgba(9,9,11,0.65);"; // balanced so movie cards stay clearly visible
+      "background:rgba(9,9,11,0.78);"; // stronger overlay so movies are clearly visible
 
-    wrap.appendChild(iframe);
+    // An invisible click-blocker placed directly over the iframe (separate
+    // from the overlay) ensures no YouTube control (play/pause icon) can
+    // ever be clicked or even rendered interactively.
+    var clickBlocker = document.createElement("div");
+    clickBlocker.style.cssText =
+      "position:absolute;inset:0;z-index:5;background:transparent;";
+
+    clipper.appendChild(iframe);
+    wrap.appendChild(clipper);
     wrap.appendChild(overlay);
+    wrap.appendChild(clickBlocker);
     document.body.appendChild(wrap);
 
     // Make sure the page's own background is transparent enough to show
